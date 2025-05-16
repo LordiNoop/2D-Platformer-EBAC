@@ -40,7 +40,7 @@ public class Player : MonoBehaviour
 
         if (_isRunning)
         {
-            animator.speed = 2;
+            animator.speed = 1.2f;
         }
         else
         {
