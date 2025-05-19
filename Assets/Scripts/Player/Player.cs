@@ -16,10 +16,13 @@ public class Player : MonoBehaviour
     public float forceJump = 2;
 
     [Header("Animation Setup")]
-    public float jumpScaleY = 1.5f;
+    /*public float jumpScaleY = 1.5f;
     public float jumpScaleX = .7f;
-    public float animationDuration = .3f;
+    public float animationDuration = .3f;*/
     public Ease ease = Ease.OutBack;
+    public SOFloat soJumpScaleY;
+    public SOFloat soJumpScaleX;
+    public SOFloat soAnimationDuration;
 
     [Header("Animation Player")]
     public string boolRun = "Run";
@@ -109,12 +112,12 @@ public class Player : MonoBehaviour
 
             if (_isFacingRight)
             {
-                jumpScaleX = (Mathf.Sign(jumpScaleX) == 1) ? jumpScaleX : -jumpScaleX;
+                soJumpScaleX.value = (Mathf.Sign(soJumpScaleX.value) == 1) ? soJumpScaleX.value : -soJumpScaleX.value;
                 myRigidbody.transform.localScale = Vector3.one;
             }
             else
             {
-                jumpScaleX = (Mathf.Sign(jumpScaleX) == -1) ? jumpScaleX : -jumpScaleX;
+                soJumpScaleX.value = (Mathf.Sign(soJumpScaleX.value) == -1) ? soJumpScaleX.value : -soJumpScaleX.value;
                 myRigidbody.transform.localScale = new Vector3(-1, 1, 1);
             }
 
@@ -126,8 +129,8 @@ public class Player : MonoBehaviour
 
     private void HandleScaleJump()
     {
-        myRigidbody.transform.DOScaleY(jumpScaleY, animationDuration).SetLoops(2, LoopType.Yoyo).SetEase(ease);
-        myRigidbody.transform.DOScaleX(jumpScaleX, animationDuration).SetLoops(2, LoopType.Yoyo).SetEase(ease);
+        myRigidbody.transform.DOScaleY(soJumpScaleY.value, soAnimationDuration.value).SetLoops(2, LoopType.Yoyo).SetEase(ease);
+        myRigidbody.transform.DOScaleX(soJumpScaleX.value, soAnimationDuration.value).SetLoops(2, LoopType.Yoyo).SetEase(ease);
     }
 
     public void DestroyMe()
