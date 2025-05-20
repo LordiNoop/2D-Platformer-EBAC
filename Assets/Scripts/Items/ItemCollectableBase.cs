@@ -5,6 +5,16 @@ using UnityEngine;
 public class ItemCollectableBase : MonoBehaviour
 {
     public string compareTag = "Player";
+    public ParticleSystem particleSystem;
+    public float timeToHide = 1f;
+    public GameObject graphicItem;
+
+    protected bool _collected = false;
+
+    private void Awake()
+    {
+        //if (particleSystem != null) particleSystem.transform.SetParent(null);
+    }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -16,13 +26,22 @@ public class ItemCollectableBase : MonoBehaviour
 
     protected virtual void Collect()
     {
-        Debug.Log("Collected");
-        OnCollect();
+        if (graphicItem != null) graphicItem.SetActive(false);
+        Invoke(nameof(HideObject), timeToHide);
+        if (!_collected) OnCollect();
+    }
+
+    private void HideObject()
+    {
         gameObject.SetActive(false);
     }
 
     protected virtual void OnCollect()
     {
-
+        if (particleSystem != null)
+        {
+            particleSystem.Play();
+        }
+        _collected = true;
     }
 }
