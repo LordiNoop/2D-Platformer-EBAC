@@ -11,6 +11,9 @@ public class ItemCollectableBase : MonoBehaviour
 
     protected bool _collected = false;
 
+    [Header("Sounds")]
+    public AudioSource audioSource;
+
     private void Awake()
     {
         //if (particleSystem != null) particleSystem.transform.SetParent(null);
@@ -41,6 +44,10 @@ public class ItemCollectableBase : MonoBehaviour
         if (particleSyst != null)
         {
             particleSyst.Play();
+        }
+        if (audioSource != null)
+        {
+            audioSource.Play();
         }
         _collected = true;
     }
