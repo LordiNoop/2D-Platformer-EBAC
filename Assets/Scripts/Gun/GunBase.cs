@@ -10,7 +10,9 @@ public class GunBase : MonoBehaviour
     public float timeBetweenShoot = .3f;
     public Transform playerSideReference;
 
-   private Coroutine _currentCoroutine;
+    private Coroutine _currentCoroutine;
+
+    [SerializeField] private AudioRandomPlayAudioClips shotSFX;
 
     private void Awake()
     {
@@ -46,5 +48,6 @@ public class GunBase : MonoBehaviour
         var projectile = Instantiate(prefabProjectile);
         projectile.transform.position = positionToShoot.position;
         projectile.side = playerSideReference.transform.localScale.x;
+        shotSFX.PlayRandom();
     }
 }

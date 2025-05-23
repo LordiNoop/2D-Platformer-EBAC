@@ -25,6 +25,8 @@ public class Player : MonoBehaviour
     public float spaceToGround = .1f;
     public ParticleSystem jumpVFX;
 
+    [Header("Sounds")]
+    public AudioSource audioSourceJumpSFX;
 
     private void Awake()
     {
@@ -41,7 +43,7 @@ public class Player : MonoBehaviour
         }
     }
 
-    private bool IsGrounded()
+    public bool IsGrounded()
     {
         //Debug.DrawRay(transform.position, -Vector2.up, Color.magenta, distToGround + spaceToGround);
         return Physics2D.Raycast(transform.position, -Vector2.up, distToGround + spaceToGround);
@@ -65,13 +67,17 @@ public class Player : MonoBehaviour
     {
         _isRunning = Input.GetKey(KeyCode.LeftControl);
 
-        if (_isRunning)
+        if (_isRunning && IsGrounded())
         {
             _currentPlayer.speed = 1.2f;
         }
-        else
+        else if (!_isRunning && IsGrounded())
         {
             _currentPlayer.speed = 1;
+        }
+        else if (!IsGrounded())
+        {
+            _currentPlayer.speed = 0;
         }
 
         if (Input.GetKey(KeyCode.LeftArrow))
@@ -81,7 +87,8 @@ public class Player : MonoBehaviour
             if (myRigidbody.transform.localScale.x != -1)
             {
                 myRigidbody.transform.DOScaleX(-1, soPlayerSetup.playerSwipeDuration);
-                _isFacingRight = false;            }
+                _isFacingRight = false;
+            }
         }
         else if (Input.GetKey(KeyCode.RightArrow))
         {
@@ -131,6 +138,7 @@ public class Player : MonoBehaviour
 
             HandleScaleJump();
             PlayJumpVFX();
+            audioSourceJumpSFX.Play();
         }
     }
 
